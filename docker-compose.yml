@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  postgresdb:
+    image: postgres:alpine
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_DB=postgres
+    networks:
+      - go-network
+
+  go-app:
+    build: .
+    image: go-app
+    ports:
+      - 3000:3000
+    env_file:
+      - .env
+    networks:
+      - go-network
+
+networks:
+  go-network:
+    driver: bridge
